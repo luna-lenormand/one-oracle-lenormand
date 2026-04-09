@@ -129,68 +129,91 @@
 
         <button onclick="resetCard()">Reset</button>
     </div>
+<script>
+    // キーワードのリスト（内容はそのまま維持）
+    const cardKeywords = {
+        1: "Rider-新しい展開、再来、訪問者、むこうから来る",
+        2: "Clover-小さな幸運、チャンス、偶然",
+        3: "Ship-移動、旅行、冒険、外国、新天地を求めて出ていく",
+        4: "House-家族や家、安定、居場所、変化を嫌う",
+        5: "Tree-まっすぐに伸びる、根を張る、生命/生命力、健全",
+        6: "Clouds-変わりやすく不安定、実体がない、曖昧、複雑",
+        7: "Snake-嫉妬、裏切り、狡猾、トラブル",
+        8: "Coffin-終わる、キャンセル、中で朽ちていく、ショック",
+        9: "Bouquet-喜び、贈り物、美しさ、順風満帆に進む",
+        10: "Scythe-突然の決断、収穫、アクシデント、イニシアチブを取る",
+        11: "burchrod-喧嘩・口論、酷使する、繰り返し・習慣、主従関係",
+        12: "Birds-コミュニケーション、ペア、活発なやり取り、会話やチャット、音声",
+        13: "Child-始まったばかり、小さい、天真爛漫、純粋さ、準備不足",
+        14: "Fox-臆病、様子を伺う、気持ちを明かさない、仕事や家事",
+        15: "Bear-所有する、大きい、パワフル、所有、家計や会計、食べ物、栄養管理、母性本能",
+        16: "Stars-夢や目指すもの、達成まであきらめない、導き、憧れ、実力を評価される",
+        17: "Stork-より良い条件を求めて動く、移動や変化、家族、関係や環境の改善",
+        18: "Dog-友、サポーター、信頼、寄り添う、ペット、仲間",
+        19: "Tower-権威・権利・監視、高い、プライド、高等教育や高い地位",
+        20: "Garden-交流、社交、沢山の人が集まる、自然、イベント",
+        21: "Mountain-隔絶、立ちはだかる、遅延、遠い場所、隔たり",
+        22: "Crossroad-分かれる、迷う、選択、ジレンマ、二重、岐路",
+        23: "Mice-じわじわと損なう、ひっきりなし、浪費、興奮・高揚",
+        24: "Heart-情熱、愛情、情動、満足、甘い、優しい気持ち",
+        25: "Ring-完結する、結びつく、契約、満了、円満、合意",
+        26: "Book-未知、閉じられている、学ぶ、隠し事、調べる",
+        27: "Letter-手紙、報せ、ネットの情報、紙類、チラシ、証明書",
+        28: "Gentleman-男性、自分または相手",
+        29: "Lady-女性、自分または相手",
+        30: "Lilly-純潔、円熟、長い時間がかかる、熟考する、経験豊か、平和",
+        31: "Sun-まぶしい、成功、地位や名声、支配的",
+        32: "Moon-うつろいやすい、感情が動く、ロマンス、インスピレーション",
+        33: "Key-運命的、欲しいものが手に入る、重要な出来事やキーパーソン、扉が開かれる",
+        34: "Fish-アクティブ、ビジネス、取引、縛られない、活動する",
+        35: "Anckor-固定する、安定する、変えられない価値観や習慣、長く残る",
+        36: "Cross-宿命、深刻な悩み、信仰、祈り、罪悪感、後悔、自己犠牲"
+    };
 
-    <script>
-        // キーワードのリスト
-        const cardKeywords = {
-          1: "Rider-新しい展開、再来、訪問者、むこうから来る",
-            2: "Clover-小さな幸運、チャンス、偶然",
-            3: "Ship-移動、旅行、冒険、外国、新天地を求めて出ていく",
-            4: "House-家族や家、安定、居場所、変化を嫌う",
-            5: "Tree-まっすぐに伸びる、根を張る、生命/生命力、健全",
-            6: "Clouds-変わりやすく不安定、実体がない、曖昧、複雑",
-            7: "Snake-嫉妬、裏切り、狡猾、トラブル",
-            8: "Coffin-終わる、キャンセル、中で朽ちていく、ショック",
-            9: "Bouquet-喜び、贈り物、美しさ、順風満帆に進む",
-            10: "Scythe-突然の決断、収穫、アクシデント、イニシアチブを取る",
-　　　　　　11: "burchrod-喧嘩・口論、酷使する、繰り返し・習慣、主従関係",
-            12: "Birds-コミュニケーション、ペア、活発なやり取り、会話やチャット、音声",
-            13: "Child-始まったばかり、小さい、天真爛漫、純粋さ、準備不足",
-            14: "Fox-臆病、様子を伺う、気持ちを明かさない、仕事や家事",
-            15: "Bear-所有する、大きい、パワフル、所有、家計や会計、食べ物、栄養管理、母性本能",
-            16: "Stars-夢や目指すもの、達成まであきらめない、導き、憧れ、実力を評価される",
-            17: "Stork-より良い条件を求めて動く、移動や変化、家族、関係や環境の改善",
-            18: "Dog-友、サポーター、信頼、寄り添う、ペット、仲間",
-            19: "Tower-権威・権利・監視、高い、プライド、高等教育や高い地位",
-            20: "Garden-交流、社交、沢山の人が集まる、自然、イベント",
-            21: "Mountain-隔絶、立ちはだかる、遅延、遠い場所、隔たり",
-　　　　　  22: "Crossroad-分かれる、迷う、選択、ジレンマ、二重、岐路",
-            23: "Mice-じわじわと損なう、ひっきりなし、浪費、興奮・高揚",
-            24: "Heart-情熱、愛情、情動、満足、甘い、優しい気持ち",
-            25: "Ring-完結する、結びつく、契約、満了、円満、合意",
-            26: "Book-未知、閉じられている、学ぶ、隠し事、調べる",
-            27: "Letter-手紙、報せ、ネットの情報、紙類、チラシ、証明書",
-            28: "Gentleman-男性、自分または相手",
-            29: "Lady-女性、自分または相手",
-            30: "Lilly-純潔、円熟、長い時間がかかる、熟考する、経験豊か、平和",
-            31: "Sun-まぶしい、成功、地位や名声、支配的",
-            32: "Moon-うつろいやすい、感情が動く、ロマンス、インスピレーション",
-            33: "Key-運命的、欲しいものが手に入る、重要な出来事やキーパーソン、扉が開かれる",
-            34: "Fish-アクティブ、ビジネス、取引、縛られない、活動する",
-            35: "Anckor-固定する、安定する、変えられない価値観や習慣、長く残る",
-            36: "Cross-宿命、深刻な悩み、信仰、祈り、罪悪感、後悔、自己犠牲"
-   
-        };
+    // 【追加】ページを開いた瞬間に全ての画像を読み込む
+    window.onload = function() {
+        for (let i = 1; i <= 36; i++) {
+            const img = new Image();
+            // 画像の拡張子が .png か .jpg か確認して合わせてください
+            img.src = `images/card${i}.png`; 
+        }
+    };
 
-        function drawCard() {
-            const card = document.getElementById('card');
-            const keywordDiv = document.getElementById('keyword-display');
+    function drawCard() {
+        const card = document.getElementById('card');
+        const resultImg = document.getElementById('result');
+        const keywordDiv = document.getElementById('keyword-display');
+        
+        if (!card.classList.contains('is-flipped')) {
+            const num = Math.floor(Math.random() * 36) + 1;
             
-            if (!card.classList.contains('is-flipped')) {
-                const num = Math.floor(Math.random() * 36) + 1;
-                document.getElementById('result').src = `images/card${num}.png`;
-                keywordDiv.innerText = cardKeywords[num] || `Card No.${num}`;
-                keywordDiv.style.opacity = "1";
+            // 1. まず画像をセット
+            resultImg.src = `images/card${num}.png`;
+            keywordDiv.innerText = cardKeywords[num] || `Card No.${num}`;
+            
+            // 2. ほんの一瞬（0.05秒）待ってからめくることで、画像切り替えの「もたつき」を隠す
+            setTimeout(() => {
                 card.classList.add('is-flipped');
-            }
+                keywordDiv.style.opacity = "1";
+            }, 50);
         }
+    }
 
-        function resetCard() {
-            const card = document.getElementById('card');
-            const keywordDiv = document.getElementById('keyword-display');
-            card.classList.remove('is-flipped');
-            keywordDiv.style.opacity = "0";
-        }
-    </script>
-</body>
+    function resetCard() {
+        const card = document.getElementById('card');
+        const resultImg = document.getElementById('result');
+        const keywordDiv = document.getElementById('keyword-display');
+
+        // 1. カードを伏せる
+        card.classList.remove('is-flipped');
+        keywordDiv.style.opacity = "0";
+
+        // 2. カードが完全に伏せられた後（1.5秒後）に画像を空にする
+        // これで次に引くときに「前の画像」が見えるのを防ぎます
+        setTimeout(() => {
+            resultImg.src = "";
+        }, 1500); 
+    }
+</script>
+    </body>
 </html>
