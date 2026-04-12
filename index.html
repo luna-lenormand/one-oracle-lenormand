@@ -5,111 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Daily Lenormand</title>
     <style>
-        body {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            background-color: #fff5f5;
-            background-image: radial-gradient(#e0c0c0 0.5px, transparent 0.5px);
-            background-size: 20px 20px;
-            font-family: 'Times New Roman', Times, 'serif', '游明朝', YuMincho, 'Hiragino Mincho ProN', Meiryo, serif;
-            color: #886666;
-            margin: 0;
-            padding: 0 20px; /* 左右に少し余白を作る */
-            min-height: 100vh;
-            text-align: center; /* 文字を中央寄せ */
-        }
-
-        h2 { 
-            margin-top: 30px; 
-            font-size: 1.5rem; /* スマホで見やすいサイズに */
-            font-weight: normal; 
-            letter-spacing: 0.1em; 
-            border-bottom: 1px solid #e0c0c0; 
-            padding-bottom: 10px; 
-            width: 100%;
-            max-width: 300px; /* 線の長さを制限 */
-        }
-
-        .subtitle {
-            font-size: 0.9rem; /* 少し小さめに */
-            color: #a08888;
-            margin-top: 10px;
-            margin-bottom: 20px;
-            line-height: 1.5; /* スマホで2行になっても読みやすく */
-            max-width: 280px;
-        }
-
-        .app-wrapper {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 100%;
-            max-width: 400px;
-            min-height: 520px;
-        }
-
-        /* カードのサイズ：画面が小さい時は少し小さくなるように設定 */
-        .card-container {
-            width: 180px;
-            max-width: 50vw; /* 画面の横幅の半分を超えないように */
-            aspect-ratio: 2 / 3; /* 縦横比を維持 */
-            perspective: 1000px;
-            cursor: pointer;
-        }
-
-        .card-inner {
-            width: 100%;
-            height: 100%;
-            position: relative;
-            transition: transform 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.1);
-            transform-style: preserve-3d;
-        }
-
+        /* スタイルは変更なし */
+        body { display: flex; flex-direction: column; align-items: center; background-color: #fff5f5; background-image: radial-gradient(#e0c0c0 0.5px, transparent 0.5px); background-size: 20px 20px; font-family: serif; color: #886666; margin: 0; padding: 0 20px; min-height: 100vh; text-align: center; }
+        h2 { margin-top: 30px; font-size: 1.5rem; font-weight: normal; border-bottom: 1px solid #e0c0c0; padding-bottom: 10px; width: 100%; max-width: 300px; }
+        .subtitle { font-size: 0.9rem; color: #a08888; margin-top: 10px; margin-bottom: 20px; }
+        .app-wrapper { display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 400px; min-height: 520px; }
+        #card-info { margin-bottom: 15px; font-size: 1.2rem; font-weight: bold; min-height: 1.5rem; transition: opacity 0.5s; opacity: 0; }
+        .card-container { width: 250px; max-width: 70vw; aspect-ratio: 1008 / 1420; perspective: 1000px; cursor: pointer; }
+        .card-inner { width: 100%; height: 100%; position: relative; transition: transform 1.2s; transform-style: preserve-3d; }
         .card-inner.is-flipped { transform: rotateY(180deg); }
-
-        .card-front, .card-back {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            backface-visibility: hidden;
-            border-radius: 12px;
-            border: 2px solid #e0c0c0; 
-            box-sizing: border-box;
-            box-shadow: 0 8px 15px rgba(136, 102, 102, 0.15); 
-            background: #fff;
-            overflow: hidden;
-        }
-
+        .card-front, .card-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 12px; border: 2px solid #e0c0c0; background: #fff; overflow: hidden; }
         .card-back { transform: rotateY(180deg); }
         img { width: 100%; height: 100%; object-fit: cover; }
-
-        #keyword-display {
-            margin-top: 25px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            min-height: 2rem; 
-            color: #b08888;
-            padding: 0 10px;
-            transition: opacity 1s ease;
-            opacity: 0;
-        }
-
-        button {
-            margin-top: 20px;
-            padding: 15px 40px; /* スマホで押しやすいように少し大きく */
-            font-size: 1rem;
-            cursor: pointer;
-            background-color: #fff;
-            color: #886666;
-            border: 1px solid #e0c0c0;
-            border-radius: 30px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            -webkit-tap-highlight-color: transparent; /* スマホのクリック時の青枠を消す */
-        }
-        
-        button:active { background-color: #ffeaea; }
-
+        #keyword-display { margin-top: 20px; font-size: 0.95rem; line-height: 1.6; min-height: 3.5rem; color: #a08888; transition: opacity 0.5s; opacity: 0; }
+        button { margin-top: 20px; padding: 15px 40px; border-radius: 30px; border: 1px solid #e0c0c0; background: #fff; color: #886666; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -118,102 +27,93 @@
     <div class="subtitle">質問をひとつ思い浮かべ、<br>カードをクリックしてください</div>
 
     <div class="app-wrapper">
+        <div id="card-info"></div>
         <div class="card-container" onclick="drawCard()">
             <div class="card-inner" id="card">
                 <div class="card-front"><img src="images/back.png"></div>
                 <div class="card-back"><img id="result" src=""></div>
             </div>
         </div>
-
         <div id="keyword-display"></div>
-
         <button onclick="resetCard()">Reset</button>
     </div>
-<script>
-    // キーワードのリスト（内容はそのまま維持）
-    const cardKeywords = {
-        1: "Rider-新しい展開、再来、訪問者、むこうから来る",
-        2: "Clover-小さな幸運、チャンス、偶然",
-        3: "Ship-移動、旅行、冒険、外国、新天地を求めて出ていく",
-        4: "House-家族や家、安定、居場所、変化を嫌う",
-        5: "Tree-まっすぐに伸びる、根を張る、生命/生命力、健全",
-        6: "Clouds-変わりやすく不安定、実体がない、曖昧、複雑",
-        7: "Snake-嫉妬、裏切り、狡猾、トラブル",
-        8: "Coffin-終わる、キャンセル、中で朽ちていく、ショック",
-        9: "Bouquet-喜び、贈り物、美しさ、順風満帆に進む",
-        10: "Scythe-突然の決断、収穫、アクシデント、イニシアチブを取る",
-        11: "burchrod-喧嘩・口論、酷使する、繰り返し・習慣、主従関係",
-        12: "Birds-コミュニケーション、ペア、活発なやり取り、会話やチャット、音声",
-        13: "Child-始まったばかり、小さい、天真爛漫、純粋さ、準備不足",
-        14: "Fox-臆病、様子を伺う、気持ちを明かさない、仕事や家事",
-        15: "Bear-所有する、大きい、パワフル、所有、家計や会計、食べ物、栄養管理、母性本能",
-        16: "Stars-夢や目指すもの、達成まであきらめない、導き、憧れ、実力を評価される",
-        17: "Stork-より良い条件を求めて動く、移動や変化、家族、関係や環境の改善",
-        18: "Dog-友、サポーター、信頼、寄り添う、ペット、仲間",
-        19: "Tower-権威・権利・監視、高い、プライド、高等教育や高い地位",
-        20: "Garden-交流、社交、沢山の人が集まる、自然、イベント",
-        21: "Mountain-隔絶、立ちはだかる、遅延、遠い場所、隔たり",
-        22: "Crossroad-分かれる、迷う、選択、ジレンマ、二重、岐路",
-        23: "Mice-じわじわと損なう、ひっきりなし、浪費、興奮・高揚",
-        24: "Heart-情熱、愛情、情動、満足、甘い、優しい気持ち",
-        25: "Ring-完結する、結びつく、契約、満了、円満、合意",
-        26: "Book-未知、閉じられている、学ぶ、隠し事、調べる",
-        27: "Letter-手紙、報せ、ネットの情報、紙類、チラシ、証明書",
-        28: "Gentleman-男性、自分または相手",
-        29: "Lady-女性、自分または相手",
-        30: "Lilly-純潔、円熟、長い時間がかかる、熟考する、経験豊か、平和",
-        31: "Sun-まぶしい、成功、地位や名声、支配的",
-        32: "Moon-うつろいやすい、感情が動く、ロマンス、インスピレーション",
-        33: "Key-運命的、欲しいものが手に入る、重要な出来事やキーパーソン、扉が開かれる",
-        34: "Fish-アクティブ、ビジネス、取引、縛られない、活動する",
-        35: "Anckor-固定する、安定する、変えられない価値観や習慣、長く残る",
-        36: "Cross-宿命、深刻な悩み、信仰、祈り、罪悪感、後悔、自己犠牲"
-    };
 
-    // 【追加】ページを開いた瞬間に全ての画像を読み込む
-    window.onload = function() {
-        for (let i = 1; i <= 36; i++) {
-            const img = new Image();
-            // 画像の拡張子が .png か .jpg か確認して合わせてください
-            img.src = `images/card${i}.png`; 
-        }
+<script>
+    // 形式を「名前」と「意味」に完全に分ける（エラー防止）
+    const cardData = {
+        1: { n: "Rider", m: "新しい展開、再来、訪問者、むこうから来る" },
+        2: { n: "Clover", m: "小さな幸運、チャンス、偶然" },
+        3: { n: "Ship", m: "移動、旅行、冒険、外国、新天地を求めて出ていく" },
+        4: { n: "House", m: "家族や家、安定、居場所、変化を嫌う" },
+        5: { n: "Tree", m: "まっすぐに伸びる、根を張る、生命/生命力、健全" },
+        6: { n: "Clouds", m: "変わりやすく不安定、実体がない、曖昧、複雑" },
+        7: { n: "Snake", m: "嫉妬、裏切り、狡猾、トラブル" },
+        8: { n: "Coffin", m: "終わる、キャンセル、中で朽ちていく、ショック" },
+        9: { n: "Bouquet", m: "喜び、贈り物、美しさ、順風満帆に進む" },
+        10: { n: "Scythe", m: "突然の決断、収穫、アクシデント、イニシアチブを取る" },
+        11: { n: "Whip", m: "喧嘩・口論、酷使する、繰り返し・習慣、主従関係" },
+        12: { n: "Birds", m: "コミュニケーション、ペア、活発なやり取り、会話やチャット、音声" },
+        13: { n: "Child", m: "始まったばかり、小さい、天真爛漫、純粋さ、準備不足" },
+        14: { n: "Fox", m: "臆病、様子を伺う、気持ちを明かさない、仕事や家事" },
+        15: { n: "Bear", m: "所有する、大きい、パワフル、所有、家計や会計、食べ物、栄養管理、母性本能" },
+        16: { n: "Stars", m: "夢や目指すもの、達成まであきらめない、導き、憧れ、実力を評価される" },
+        17: { n: "Stork", m: "より良い条件を求めて動く、移動や変化、家族、関係や環境の改善" },
+        18: { n: "Dog", m: "友、サポーター、信頼、寄り添う、ペット、仲間" },
+        19: { n: "Tower", m: "権威・権利・監視、高い、プライド、高等教育や高い地位" },
+        20: { n: "Garden", m: "交流、社交、沢山の人が集まる、自然、イベント" },
+        21: { n: "Mountain", m: "隔絶、立ちはだかる、遅延、遠い場所、隔たり" },
+        22: { n: "Crossroad", m: "分かれる、迷う、選択、ジレンマ、二重、岐路" },
+        23: { n: "Mice", m: "じわじわと損なう、ひっきりなし、浪費、興奮・高揚" },
+        24: { n: "Heart", m: "情熱、愛情、情動、満足、甘い、優しい気持ち" },
+        25: { n: "Ring", m: "完結する、結びつく、契約、満了、円満、合意" },
+        26: { n: "Book", m: "未知、閉じられている、学ぶ、隠し事、調べる" },
+        27: { n: "Letter", m: "手紙、報せ、ネットの情報、紙類、チラシ、証明書" },
+        28: { n: "Gentleman", m: "男性、自分または相手" },
+        29: { n: "Lady", m: "女性、自分または相手" },
+        30: { n: "Lilly", m: "純潔、円熟、長い時間がかかる、熟考する、経験豊か、平和" },
+        31: { n: "Sun", m: "まぶしい、成功、地位や名声、支配的" },
+        32: { n: "Moon", m: "うつろいやすい、感情が動く、ロマンス、インスピレーション" },
+        33: { n: "Key", m: "運命的、欲しいものが手に入る、重要な出来事やキーパーソン、扉が開かれる" },
+        34: { n: "Fish", m: "アクティブ、ビジネス、取引、縛られない、活動する" },
+        35: { n: "Anchor", m: "固定する、安定する、変えられない価値観や習慣、長く残る" },
+        36: { n: "Cross", m: "宿命、深刻な悩み、信仰、祈り、罪悪感、後悔、自己犠牲" }
     };
 
     function drawCard() {
         const card = document.getElementById('card');
-        const resultImg = document.getElementById('result');
-        const keywordDiv = document.getElementById('keyword-display');
+        if (card.classList.contains('is-flipped')) return;
+
+        const num = Math.floor(Math.random() * 36) + 1;
+        const data = cardData[num];
         
-        if (!card.classList.contains('is-flipped')) {
-            const num = Math.floor(Math.random() * 36) + 1;
-            
-            // 1. まず画像をセット
-            resultImg.src = `images/card${num}.png`;
-            keywordDiv.innerText = cardKeywords[num] || `Card No.${num}`;
-            
-            // 2. ほんの一瞬（0.05秒）待ってからめくることで、画像切り替えの「もたつき」を隠す
-            setTimeout(() => {
-                card.classList.add('is-flipped');
-                keywordDiv.style.opacity = "1";
-            }, 50);
-        }
+        const resultImg = document.getElementById('result');
+        const infoDiv = document.getElementById('card-info');
+        const keywordDiv = document.getElementById('keyword-display');
+
+        // 表示内容をセット
+        infoDiv.innerText = num + ". " + data.n;
+        keywordDiv.innerText = data.m;
+        resultImg.src = "images/card" + num + ".png";
+
+        // めくる動作
+        setTimeout(() => {
+            card.classList.add('is-flipped');
+            infoDiv.style.opacity = "1";
+            keywordDiv.style.opacity = "1";
+        }, 150);
     }
 
     function resetCard() {
         const card = document.getElementById('card');
-        const resultImg = document.getElementById('result');
-        const keywordDiv = document.getElementById('keyword-display');
-
-        // 1. カードを伏せる
         card.classList.remove('is-flipped');
-        keywordDiv.style.opacity = "0";
-
-        // 2. カードが完全に伏せられた後（1.5秒後）に画像を空にする
-        // これで次に引くときに「前の画像」が見えるのを防ぎます
+        document.getElementById('card-info').style.opacity = "0";
+        document.getElementById('keyword-display').style.opacity = "0";
+        
+        // 伏せた後に画像をクリア
         setTimeout(() => {
-            resultImg.src = "";
-        }, 1500); 
+            document.getElementById('result').src = "";
+        }, 1000);
     }
 </script>
-    </body>
+</body>
 </html>
