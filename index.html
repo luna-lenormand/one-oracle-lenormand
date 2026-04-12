@@ -5,11 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Daily Lenormand</title>
     <style>
-        /* スタイルは変更なし */
-        body { display: flex; flex-direction: column; align-items: center; background-color: #fff5f5; background-image: radial-gradient(#e0c0c0 0.5px, transparent 0.5px); background-size: 20px 20px; font-family: serif; color: #886666; margin: 0; padding: 0 20px; min-height: 100vh; text-align: center; }
+        /* 全体のレイアウト調整 */
+        body { 
+            display: flex; flex-direction: column; align-items: center; 
+            background-color: #fff5f5; background-image: radial-gradient(#e0c0c0 0.5px, transparent 0.5px); 
+            background-size: 20px 20px; font-family: serif; color: #886666; 
+            margin: 0; padding: 0 20px; min-height: 100vh; text-align: center; 
+        }
         h2 { margin-top: 30px; font-size: 1.5rem; font-weight: normal; border-bottom: 1px solid #e0c0c0; padding-bottom: 10px; width: 100%; max-width: 300px; }
         .subtitle { font-size: 0.9rem; color: #a08888; margin-top: 10px; margin-bottom: 20px; }
-        .app-wrapper { display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 400px; min-height: 520px; }
+        
+        .app-wrapper { 
+            display: flex; flex-direction: column; align-items: center; 
+            width: 100%; max-width: 400px; min-height: 520px; 
+            flex: 1; /* コンテンツ領域を広げてフッターを下に送る */
+        }
+        
         #card-info { margin-bottom: 15px; font-size: 1.2rem; font-weight: bold; min-height: 1.5rem; transition: opacity 0.5s; opacity: 0; }
         .card-container { width: 250px; max-width: 70vw; aspect-ratio: 1008 / 1420; perspective: 1000px; cursor: pointer; }
         .card-inner { width: 100%; height: 100%; position: relative; transition: transform 1.2s; transform-style: preserve-3d; }
@@ -19,6 +30,15 @@
         img { width: 100%; height: 100%; object-fit: cover; }
         #keyword-display { margin-top: 20px; font-size: 0.95rem; line-height: 1.6; min-height: 3.5rem; color: #a08888; transition: opacity 0.5s; opacity: 0; }
         button { margin-top: 20px; padding: 15px 40px; border-radius: 30px; border: 1px solid #e0c0c0; background: #fff; color: #886666; cursor: pointer; }
+
+        /* コピーライトのスタイル */
+        footer {
+            margin-top: 40px;
+            padding-bottom: 20px;
+            font-size: 0.8rem;
+            color: #b09a9a;
+            letter-spacing: 0.05em;
+        }
     </style>
 </head>
 <body>
@@ -38,8 +58,11 @@
         <button onclick="resetCard()">Reset</button>
     </div>
 
+    <footer>
+        &copy; Luna
+    </footer>
+
 <script>
-    // 形式を「名前」と「意味」に完全に分ける（エラー防止）
     const cardData = {
         1: { n: "Rider", m: "新しい展開、再来、訪問者、むこうから来る" },
         2: { n: "Clover", m: "小さな幸運、チャンス、偶然" },
@@ -90,12 +113,10 @@
         const infoDiv = document.getElementById('card-info');
         const keywordDiv = document.getElementById('keyword-display');
 
-        // 表示内容をセット
         infoDiv.innerText = num + ". " + data.n;
         keywordDiv.innerText = data.m;
         resultImg.src = "images/card" + num + ".png";
 
-        // めくる動作
         setTimeout(() => {
             card.classList.add('is-flipped');
             infoDiv.style.opacity = "1";
@@ -109,7 +130,6 @@
         document.getElementById('card-info').style.opacity = "0";
         document.getElementById('keyword-display').style.opacity = "0";
         
-        // 伏せた後に画像をクリア
         setTimeout(() => {
             document.getElementById('result').src = "";
         }, 1000);
